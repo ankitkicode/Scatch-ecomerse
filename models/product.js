@@ -17,6 +17,14 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    isAdmin:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Owner',
+    },
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     bgcolor: {
         type: String,
         required: [true, 'Background color is required']

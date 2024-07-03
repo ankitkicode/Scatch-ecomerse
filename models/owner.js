@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 
-const userSchema = new mongoose.Schema({
+const ownerSchema = new mongoose.Schema({
     fullname: {
         type: String,
         required: [true, 'Full name is required'],
@@ -20,39 +20,19 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Password is required'],
         minlength: [6, 'Password must be at least 6 characters long']
     },
-    isAdmin:{
-        type: Boolean,
-    },
-    cart: {
-        type: Array,
-        default: []
-    },
-    isadmin: {
+    isAdmin: {
         type: Boolean,
         default: false
     },
-    orders: {
-        type: Array,
-        default: []
-    },
-    contact: {
-        type: String,
-        required: [true, 'Contact number is required'],
-        validate: {
-            validator: function(v) {
-                return /\d{10}/.test(v);
-            },
-            message: props => `${props.value} is not a valid contact number!`
-        }
+    products: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
     },
     picture: {
         type: String,
         default: 'https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
     },
-    products:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Product'
-    }
+    gstin:String,
 });
 
 // userSchema.pre('save', async function(next) {
@@ -62,6 +42,6 @@ const userSchema = new mongoose.Schema({
 //     next();
 // });
 
-const User = mongoose.model('User', userSchema);
+const Owner = mongoose.model('Owner', ownerSchema);
 
-module.exports = User;
+module.exports = Owner;
