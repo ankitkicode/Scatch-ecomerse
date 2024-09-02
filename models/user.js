@@ -22,22 +22,19 @@ const userSchema = new mongoose.Schema({
     },
     isAdmin:{
         type: Boolean,
+        default: false
     },
     cart: {
         type: Array,
         default: []
     },
-    isadmin: {
-        type: Boolean,
-        default: false
-    },
+
     orders: {
         type: Array,
         default: []
     },
     contact: {
         type: String,
-        required: [true, 'Contact number is required'],
         validate: {
             validator: function(v) {
                 return /\d{10}/.test(v);
@@ -49,18 +46,18 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg'
     },
-    products:{
+    products:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Product'
-    }
+    }]
 });
 
-// userSchema.pre('save', async function(next) {
-//     if (this.isModified('password')) {
-//         this.password = await bcrypt.hash(this.password, 12);
-//     }
-//     next();
-// });
+userSchema.pre('save', async function(next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 12);
+    }
+    next();
+});
 
 const User = mongoose.model('User', userSchema);
 

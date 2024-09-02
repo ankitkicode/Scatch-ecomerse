@@ -22,7 +22,7 @@ const ownerSchema = new mongoose.Schema({
     },
     isAdmin: {
         type: Boolean,
-        default: false
+        default: true
     },
     products: {
         type: mongoose.Schema.Types.ObjectId,
@@ -35,12 +35,12 @@ const ownerSchema = new mongoose.Schema({
     gstin:String,
 });
 
-// userSchema.pre('save', async function(next) {
-//     if (this.isModified('password')) {
-//         this.password = await bcrypt.hash(this.password, 12);
-//     }
-//     next();
-// });
+ownerSchema.pre('save', async function(next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 12);
+    }
+    next();
+});
 
 const Owner = mongoose.model('Owner', ownerSchema);
 
